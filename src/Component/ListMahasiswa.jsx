@@ -8,7 +8,13 @@ const api = "http://localhost:3001";
 
 const ListMahasiswa = () => {
   const [mahasiswa, setMahasiswa] = useState([]);
-  const { state } = useContext(authContext);
+  const { state, dispatch } = useContext(authContext);
+  const timeOut = () => {
+    setTimeout(() => {
+      console.log("Token expired");
+      dispatch({ type: "logout" });
+    }, state.tokenExpires);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +33,7 @@ const ListMahasiswa = () => {
     };
 
     fetchData();
+    timeOut();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!state.isAuthenticated) {

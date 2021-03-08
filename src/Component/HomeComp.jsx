@@ -4,7 +4,7 @@ import { Jumbotron, Button } from "reactstrap";
 import { authContext } from "../App";
 
 const HomeComp = () => {
-  const { state, dispatch } = useContext(authContext);
+  const { state } = useContext(authContext);
 
   if (!state.isAuthenticated) {
     return <Redirect to="/login" />;
