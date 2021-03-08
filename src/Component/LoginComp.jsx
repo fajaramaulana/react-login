@@ -10,12 +10,11 @@ import {
   FormGroup,
   Label,
   Input,
-  Card,
-  CardImg,
   Alert,
 } from "reactstrap";
 import { authContext } from "../App";
 import { Link } from "react-router-dom";
+import "../App.css";
 const api = "http://localhost:3001";
 
 const LoginComp = (props) => {
@@ -86,14 +85,11 @@ const LoginComp = (props) => {
         <br />
         <Row>
           <Col md="6">
-            <Card>
-              <CardImg
-                top
-                width="100%"
-                src="https://placeimg.com/640/480/tech"
-                alt="Card image cap"
-              />
-            </Card>
+            <div className="container-logo">
+              <span class="react-logo">
+                <span class="nucleo"></span>
+              </span>
+            </div>
           </Col>
           <Col md="6">
             <h1>Login</h1>

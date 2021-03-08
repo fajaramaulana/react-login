@@ -8,6 +8,9 @@ import RegisterComp from "./Component/RegisterComp";
 import Public from "./Component/Public";
 import Transaction from "./Component/Transaction";
 import ListMahasiswa from "./Component/ListMahasiswa";
+import RoleAdmin from "./Component/RoleAccess/RoleAdmin";
+import RoleStaff from "./Component/RoleAccess/RoleStaff";
+import RoleMember from "./Component/RoleAccess/RoleMember";
 
 // Context
 export const authContext = createContext();
@@ -18,6 +21,7 @@ const initialState = {
   user: null,
   token: null,
   tokenExpires: 0,
+  role: 0,
 };
 
 const reducer = (state, action) => {
@@ -33,6 +37,7 @@ const reducer = (state, action) => {
         user: action.payload.user,
         token: action.payload.token,
         tokenExpires: action.payload.expires,
+        role: action.payload.role,
       };
     case "logout":
       // localStorage.clear();
@@ -54,17 +59,15 @@ const App = () => {
       <Switch>
         <authContext.Provider value={{ state, dispatch }}>
           <MenuComp />
-          {/* {!state.isAuthenticated ? (
-            <Redirect to={{ pathname: "/" }} />
-          ) : (
-            <Redirect to={{ pathname: "/home" }} />
-          )} */}
           <Route exact path="/" component={Public} />
           <Route exact path="/login" component={LoginComp} />
           <Route exact path="/dashboard" component={HomeComp} />
           <Route exact path="/transaction" component={Transaction} />
           <Route exact path="/register" component={RegisterComp} />
           <Route exact path="/mahasiswa" component={ListMahasiswa} />
+          <Route exact path="/admin" component={RoleAdmin} />
+          <Route exact path="/staff" component={RoleStaff} />
+          <Route exact path="/member" component={RoleMember} />
         </authContext.Provider>
       </Switch>
     </BrowserRouter>
