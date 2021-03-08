@@ -14,11 +14,29 @@ import {
 } from "reactstrap";
 import { authContext } from "../App";
 import { Link } from "react-router-dom";
+
 import "../App.css";
+let Recaptcha = require("react-recaptcha");
 const api = "http://localhost:3001";
 
 const LoginComp = (props) => {
   const [visible, setVisible] = useState(true);
+
+  // specifying your onload callback function
+  let callback = function () {
+    console.log("Done!!!!");
+  };
+
+  // specifying verify callback function
+  let verifyCallback = function (response) {
+    console.log(response);
+    if (response) {
+      setData({
+        ...data,
+        isVerified: true,
+      });
+    }
+  };
 
   const onDismiss = () => setVisible(false);
   const { dispatch } = useContext(authContext);
@@ -27,6 +45,7 @@ const LoginComp = (props) => {
     password: "",
     isSubmit: false,
     errorMessage: null,
+    isVerified: false,
   };
 
   const [data, setData] = useState(initialState);
@@ -40,43 +59,47 @@ const LoginComp = (props) => {
 
   const handleFromSubmit = (event) => {
     event.preventDefault();
-    setData({
-      ...data,
-      isSubmit: true,
-      errorMessage: null,
-    });
-
-    const requestBody = {
-      email: data.email,
-      password: data.password,
-    };
-
-    const config = {
-      headers: {
-        "Contet-Type": "application/x-www-form-urlendcoded",
-      },
-    };
-
-    axios
-      .post(`${api}/auth/api/v1/login`, qs.stringify(requestBody), config)
-      .then((res) => {
-        if (res.data.success === true) {
-          dispatch({
-            type: "login",
-            payload: res.data,
-          });
-
-          props.history.push("/dashboard");
-        } else {
-          setData({
-            ...data,
-            isSubmit: false,
-            errorMessage: res.data.Message,
-          });
-        }
-
-        throw res;
+    if (data.isVerified) {
+      setData({
+        ...data,
+        isSubmit: true,
+        errorMessage: null,
       });
+
+      const requestBody = {
+        email: data.email,
+        password: data.password,
+      };
+
+      const config = {
+        headers: {
+          "Contet-Type": "application/x-www-form-urlendcoded",
+        },
+      };
+
+      axios
+        .post(`${api}/auth/api/v1/login`, qs.stringify(requestBody), config)
+        .then((res) => {
+          if (res.data.success === true) {
+            dispatch({
+              type: "login",
+              payload: res.data,
+            });
+
+            props.history.push("/dashboard");
+          } else {
+            setData({
+              ...data,
+              isSubmit: false,
+              errorMessage: res.data.Message,
+            });
+          }
+
+          throw res;
+        });
+    } else {
+      alert("You are robot! please check the checkbox");
+    }
   };
 
   return (
@@ -117,12 +140,22 @@ const LoginComp = (props) => {
                   onChange={handleInputChange}
                 ></Input>
               </FormGroup>
+              <Recaptcha
+                sitekey="6LeZ83YaAAAAADy6rHNzdUp2EqG_sxBm29pxykku"
+                render="explicit"
+                verifyCallback={verifyCallback}
+                onloadCallback={callback}
+              />
               {data.errorMessage && (
                 <Alert color="danger" isOpen={visible} toggle={onDismiss}>
                   {data.errorMessage}
                 </Alert>
               )}
-              <Button disbaled={data.isSubmit} color="primary">
+              <Button
+                style={{ marginTop: 10 }}
+                disbaled={data.isSubmit}
+                color="primary"
+              >
                 {data.isSubmit ? "...Loading" : "Login"}
               </Button>
             </Form>
