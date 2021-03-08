@@ -19,6 +19,27 @@ const MenuComp = () => {
 
   const { state, dispatch } = useContext(authContext);
 
+  if (!state.isAuthenticated) {
+    return (
+      <div>
+        <Navbar className="navbar-dark bg-dark" expand="md">
+          <NavLink className="navbar-brand" to="/">
+            React
+          </NavLink>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              <NavItem></NavItem>
+            </Nav>
+            <NavbarText>
+              <NavLink to="/login">Login</NavLink>
+            </NavbarText>
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar className="navbar-dark bg-dark" expand="md">
@@ -29,8 +50,13 @@ const MenuComp = () => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink className="nav-link" to="/">
-                Components
+              <NavLink className="nav-link" to="/dashboard">
+                Home
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink className="nav-link" to="/transaction">
+                Transaction
               </NavLink>
             </NavItem>
           </Nav>
@@ -39,9 +65,7 @@ const MenuComp = () => {
               onClick={() => dispatch({ type: "logout" })}
               color="default"
             >
-              {state.isAuthenticated && (
-                <NavLinkReactstrap>Logout</NavLinkReactstrap>
-              )}
+              <NavLinkReactstrap>Logout</NavLinkReactstrap>
             </Button>
           </NavbarText>
         </Collapse>

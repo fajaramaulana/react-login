@@ -18,7 +18,7 @@ import { authContext } from "../App";
 import { Link } from "react-router-dom";
 const api = "http://localhost:3001";
 
-const LoginComp = () => {
+const LoginComp = (props) => {
   const [visible, setVisible] = useState(true);
 
   const onDismiss = () => setVisible(false);
@@ -66,6 +66,8 @@ const LoginComp = () => {
             type: "login",
             payload: res.data,
           });
+
+          props.history.push("/dashboard");
         } else {
           setData({
             ...data,

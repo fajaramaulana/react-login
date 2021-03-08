@@ -3,16 +3,15 @@ import { Redirect } from "react-router-dom";
 import { Jumbotron, Button } from "reactstrap";
 import { authContext } from "../App";
 
-const HomeComp = () => {
+const Transaction = () => {
   const { state, dispatch } = useContext(authContext);
-
   if (!state.isAuthenticated) {
     return <Redirect to="/login" />;
   }
   return (
     <div>
       <Jumbotron>
-        <h1 className="display-3">Hello, {state.user}!</h1>
+        <h1 className="display-3">Transaction</h1>
         <p className="lead">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos iste
           totam saepe! Similique, neque, magnam quisquam eligendi ullam illo{" "}
@@ -32,4 +31,4 @@ const HomeComp = () => {
   );
 };
 
-export default HomeComp;
+export default Transaction;
