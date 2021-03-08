@@ -59,6 +59,11 @@ const MenuComp = () => {
                 Transaction
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink className="nav-link" to="/mahasiswa">
+                Mahasiswa
+              </NavLink>
+            </NavItem>
           </Nav>
           <NavbarText>
             <Button

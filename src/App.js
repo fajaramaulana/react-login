@@ -7,6 +7,7 @@ import HomeComp from "./Component/HomeComp";
 import RegisterComp from "./Component/RegisterComp";
 import Public from "./Component/Public";
 import Transaction from "./Component/Transaction";
+import ListMahasiswa from "./Component/ListMahasiswa";
 
 // Context
 export const authContext = createContext();
@@ -21,8 +22,10 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "login":
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      sessionStorage.setItem("user", JSON.stringify(action.payload.user));
+      sessionStorage.setItem("token", JSON.stringify(action.payload.token));
+      // localStorage.setItem("user", JSON.stringify(action.payload.user));
+      // localStorage.setItem("token", JSON.stringify(action.payload.token));
       return {
         ...state,
         isAuthenticated: true,
@@ -30,7 +33,8 @@ const reducer = (state, action) => {
         token: action.payload.token,
       };
     case "logout":
-      localStorage.clear();
+      // localStorage.clear();
+      sessionStorage.clear();
       return {
         ...state,
         isAuthenticated: false,
@@ -58,6 +62,7 @@ const App = () => {
           <Route exact path="/dashboard" component={HomeComp} />
           <Route exact path="/transaction" component={Transaction} />
           <Route exact path="/register" component={RegisterComp} />
+          <Route exact path="/mahasiswa" component={ListMahasiswa} />
         </authContext.Provider>
       </Switch>
     </BrowserRouter>
