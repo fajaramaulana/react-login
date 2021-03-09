@@ -20,7 +20,22 @@ let Recaptcha = require("react-recaptcha");
 const api = "http://localhost:3001";
 
 const LoginComp = (props) => {
+  const initialState = {
+    isSubmit: false,
+    errorMessage: null,
+    isVerified: false,
+  };
+
+  const stateForm = {
+    email: "",
+    password: "",
+  };
+
   const [visible, setVisible] = useState(true);
+  const [data, setData] = useState(initialState);
+  const [dataForm, setDataForm] = useState(stateForm);
+  const { dispatch } = useContext(authContext);
+  const onDismiss = () => setVisible(false);
 
   // specifying your onload callback function
   let callback = function () {
@@ -38,21 +53,9 @@ const LoginComp = (props) => {
     }
   };
 
-  const onDismiss = () => setVisible(false);
-  const { dispatch } = useContext(authContext);
-  const initialState = {
-    email: "",
-    password: "",
-    isSubmit: false,
-    errorMessage: null,
-    isVerified: false,
-  };
-
-  const [data, setData] = useState(initialState);
-
   const handleInputChange = (event) => {
-    setData({
-      ...data,
+    setDataForm({
+      ...dataForm,
       [event.target.name]: event.target.value,
     });
   };
@@ -67,8 +70,8 @@ const LoginComp = (props) => {
       });
 
       const requestBody = {
-        email: data.email,
-        password: data.password,
+        email: dataForm.email,
+        password: dataForm.password,
       };
 
       const config = {
@@ -132,7 +135,7 @@ const LoginComp = (props) => {
                   name="email"
                   id="email"
                   placeholder="Type your email here"
-                  value={data.email}
+                  value={dataForm.email}
                   onChange={handleInputChange}
                 ></Input>
               </FormGroup>
@@ -143,7 +146,7 @@ const LoginComp = (props) => {
                   name="password"
                   id="password"
                   placeholder="Type your password here"
-                  value={data.password}
+                  value={dataForm.password}
                   onChange={handleInputChange}
                 ></Input>
               </FormGroup>
@@ -153,11 +156,7 @@ const LoginComp = (props) => {
                 verifyCallback={verifyCallback}
                 onloadCallback={callback}
               />
-              {data.errorMessage && (
-                <Alert color="danger" isOpen={visible} toggle={onDismiss}>
-                  {data.errorMessage}
-                </Alert>
-              )}
+
               <Button
                 style={{ marginTop: 10 }}
                 disbaled={data.isSubmit}
@@ -166,6 +165,16 @@ const LoginComp = (props) => {
                 {data.isSubmit ? "...Loading" : "Login"}
               </Button>
             </Form>
+            {data.errorMessage && (
+              <Alert
+                style={{ marginTop: 10 }}
+                color="danger"
+                isOpen={visible}
+                toggle={onDismiss}
+              >
+                {data.errorMessage}
+              </Alert>
+            )}
             <p>
               Don't Have An Accout? <Link to="/register">Click Here</Link>{" "}
             </p>
