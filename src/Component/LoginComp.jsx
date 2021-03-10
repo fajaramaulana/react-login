@@ -44,7 +44,6 @@ const LoginComp = (props) => {
 
   // specifying verify callback function
   let verifyCallback = function (response) {
-    console.log(response);
     if (response) {
       setData({
         ...data,
@@ -84,6 +83,7 @@ const LoginComp = (props) => {
         .post(`${api}/auth/api/v1/login`, qs.stringify(requestBody), config)
         .then((res) => {
           if (res.data.success === true && res.data.isVerified === 1) {
+            console.log(res.data);
             dispatch({
               type: "login",
               payload: res.data,

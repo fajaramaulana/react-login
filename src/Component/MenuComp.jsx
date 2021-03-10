@@ -9,6 +9,7 @@ import MenuStaff from "./Menu/MenuStaff";
 const MenuComp = () => {
   const { state } = useContext(authContext);
 
+  console.log(state);
   if (!state.isAuthenticated) {
     return <MenuPublic />;
   }
@@ -20,6 +21,8 @@ const MenuComp = () => {
       return <MenuStaff />;
     } else if (state.role === 3) {
       return <MenuMember />;
+    } else {
+      return <MenuPublic />;
     }
   };
 

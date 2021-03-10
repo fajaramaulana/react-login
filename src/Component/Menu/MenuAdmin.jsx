@@ -32,8 +32,8 @@ const MenuAdmin = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink className="nav-link" to="/transaction">
-                Transaction
+              <NavLink className="nav-link" to="/user">
+                List User
               </NavLink>
             </NavItem>
             <NavItem>

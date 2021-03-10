@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Table, Button } from "reactstrap";
 import { authContext } from "../App";
 import { Redirect } from "react-router-dom";
 
-const api = "http://localhost:3001";
-
-const ListMahasiswa = () => {
-  const [mahasiswa, setMahasiswa] = useState([]);
+const ListUser = () => {
+  const [user, setUser] = useState([]);
   const { state, dispatch } = useContext(authContext);
+
+  const api = "http://localhost:3001";
   const timeOut = () => {
     setTimeout(() => {
       console.log("Token expired");
@@ -24,20 +24,18 @@ const ListMahasiswa = () => {
           Authorization: "Bearer " + state.token,
         },
       };
-      const result = await axios.get(
-        `${api}/auth/api/v1/admin/mahasiswa`,
-        config
-      );
-      setMahasiswa(result.data.values);
+      const result = await axios.get(`${api}/auth/api/v1/admin/user`, config);
+      setUser(result.data.values);
     };
 
     fetchData();
     timeOut();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
   if (!state.isAuthenticated) {
     return <Redirect to="/login" />;
   }
+
   return (
     <div>
       <Container>
@@ -47,18 +45,20 @@ const ListMahasiswa = () => {
           <Table className="table-bordered ">
             <thead>
               <tr>
-                <th>NIM</th>
-                <th>Nama</th>
-                <th>Prodi</th>
+                <th>No</th>
+                <th>Username</th>
+                <th>email</th>
+                <th>Role</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {mahasiswa.map((mahasiswa) => (
-                <tr key={mahasiswa.id}>
-                  <td>{mahasiswa.nim}</td>
-                  <td>{mahasiswa.nama}</td>
-                  <td>{mahasiswa.prodi}</td>
+              {user.map((user, index) => (
+                <tr key={user.id}>
+                  <td>{index + 1}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.role}</td>
                   <td>
                     <Button>Edit</Button>
                     <span> </span>
@@ -74,4 +74,4 @@ const ListMahasiswa = () => {
   );
 };
 
-export default ListMahasiswa;
+export default ListUser;

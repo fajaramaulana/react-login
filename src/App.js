@@ -11,28 +11,32 @@ import ListMahasiswa from "./Component/ListMahasiswa";
 import RoleAdmin from "./Component/RoleAccess/RoleAdmin";
 import RoleStaff from "./Component/RoleAccess/RoleStaff";
 import RoleMember from "./Component/RoleAccess/RoleMember";
+import ListUser from "./Component/ListUser";
 
 // Context
 export const authContext = createContext();
 
 // inisialisasi state
 const initialState = {
-  isAuthenticated: false,
-  user: null,
-  token: null,
-  tokenExpires: 0,
-  role: 0,
+  isAuthenticated: sessionStorage.getItem("token") ? true : false,
+  user: sessionStorage.getItem("user"),
+  token: sessionStorage.getItem("token"),
+  tokenExpires: parseInt(sessionStorage.getItem("tokenExpires")),
+  role: parseInt(sessionStorage.getItem("role")),
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case "login":
-      sessionStorage.setItem("user", JSON.stringify(action.payload.user));
-      sessionStorage.setItem("token", JSON.stringify(action.payload.token));
+      sessionStorage.setItem("user", action.payload.user);
+      sessionStorage.setItem("token", action.payload.token);
+      sessionStorage.setItem("role", action.payload.role);
+      sessionStorage.setItem("tokenExpires", action.payload.expires);
       // localStorage.setItem("user", JSON.stringify(action.payload.user));
       // localStorage.setItem("token", JSON.stringify(action.payload.token));
       return {
         ...state,
+        ...action.payload,
         isAuthenticated: true,
         user: action.payload.user,
         token: action.payload.token,
@@ -68,6 +72,7 @@ const App = () => {
           <Route exact path="/admin" component={RoleAdmin} />
           <Route exact path="/staff" component={RoleStaff} />
           <Route exact path="/member" component={RoleMember} />
+          <Route exact path="/user" component={ListUser} />
         </authContext.Provider>
       </Switch>
     </BrowserRouter>

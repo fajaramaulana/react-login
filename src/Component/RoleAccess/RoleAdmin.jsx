@@ -9,6 +9,8 @@ const RoleAdmin = () => {
     return <Redirect to="/login" />;
   }
 
+  console.log(state.isAuthenticated);
+
   const role = () => {
     if (state.role === 1) {
       return "Admin";
